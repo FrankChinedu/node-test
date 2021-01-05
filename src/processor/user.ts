@@ -36,6 +36,13 @@ export const User = {
         }
       }
       const user = await UserModel.findOne(query);
+      if(!user) {
+        return {
+          success: false,
+          status: 401,
+          error: 'Invalid credentials'
+        }
+      }
     
       const isValid = await bcrypt.compare(body.password, user.password);
       
@@ -105,6 +112,24 @@ export const User = {
           name: user.name,
           email: user.email
         }
+      }
+    } catch (error) {
+      return {
+        success:false,
+        status: 500,
+        error: "An Error must have Occured please try again",
+      }
+    }
+  },
+
+  delete: async (id:number):Promise<IResponse| void> => {
+    try {
+      const user = await UserModel.findByPk(id);
+      user.destroy();
+      return {
+        success: true,
+        status: 200,
+        message: 'user account deleted successfully'
       }
     } catch (error) {
       return {

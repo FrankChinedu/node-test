@@ -18,4 +18,6 @@ Router.patch("/user", authenticate, validateUpdateBody,  UserController.update);
 
 Router.get("/user", authenticate,  UserController.get);
 
+Router.delete("/user", authenticate,  UserController.delete);
+
 export default Router;
