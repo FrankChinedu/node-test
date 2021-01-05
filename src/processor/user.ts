@@ -1,30 +1,33 @@
 import { models } from '../database/model';
-import UserM from '../database/model/users'
 import { Op as op } from 'sequelize';
 import bcrypt from 'bcrypt';
-import { IResponse, IRegisterIn } from "../Interfaces";
+import { IResponse, UserDataType, UserType } from "../Interfaces";
 const UserModel = models.User;
 
 export const User = {
-  register: async (body: IRegisterIn): Promise<IResponse| void> => {
+  register: async (body: UserDataType): Promise<IResponse| void> => {
 
     try {
       const user = await UserModel.create(body);
       return {
         success: true,
         status: 200,
-        data: user
+        data: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        }
       }
     } catch (error) {
       return {
         success:false,
         status: 500,
-        error: "An Error must have Occured please try again",
+        error: error.message || "An Error must have Occured please try again",
       }
     }
   },
 
-  login: async (body: IRegisterIn): Promise<IResponse| void> => {
+  login: async (body: UserDataType): Promise<IResponse| void> => {
     
     try {
       const query = {
@@ -47,7 +50,11 @@ export const User = {
       return {
         success: true,
         status: 200,
-        data: user
+        data: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        }
       }
     } catch (error) {
       return {
@@ -57,4 +64,54 @@ export const User = {
       }
     }
   },
+
+  update: async (body: UserDataType, user: any): Promise<IResponse| void> => {
+    let thisUser = user as UserType;
+    let name = body.name;
+
+    try {
+      const query = {
+        where :{
+          email: thisUser.email
+        }
+      }
+      const user = await UserModel.findOne(query);
+
+      user.name = name;
+      await user.save();
+
+      return {
+        success: true,
+        status: 200,
+        message: 'updated successfully'
+      }
+    } catch (error) {
+      return {
+        success:false,
+        status: 500,
+        error: "An Error must have Occured please try again",
+      }
+    }
+  },
+
+  getById: async (id:number):Promise<IResponse| void> => {
+    try {
+      const user = await UserModel.findOne(id);
+      return {
+        success: true,
+        status: 200,
+        data: {
+          id: user.id,
+          name: user.name,
+          email: user.email
+        }
+      }
+    } catch (error) {
+      return {
+        success:false,
+        status: 500,
+        error: "An Error must have Occured please try again",
+      }
+    }
+  }
 };

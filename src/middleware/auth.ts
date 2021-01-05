@@ -1,10 +1,12 @@
 import Joi from 'joi';
 import { NextFunction, Response, Request } from 'express';
 import { throwIfUndefined } from '../utils';
-import { JWT_SECRET } from '../config/env';
-import jwt from 'jsonwebtoken';
+import { verify } from '../utils/jwt'
+import { models } from '../database/model';
+const UserModel = models.User;
 
-export async function validateUserToken(
+
+export async function authenticate(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -30,20 +32,28 @@ export async function validateUserToken(
     authorization = throwIfUndefined(authorization, 'authorization');
 
     const [, token] = authorization.split('Bearer ');
-    let decoded: { id: string };
+  
+    let decoded;
 
     try {
-      decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+      decoded = await verify(token);
     } catch (error) {
       return res.status(401).json({
         success: false,
         error: 'Invalid authorization token',
       });
     }
+    
+    const user = {
+      id: decoded.id,
+      name: decoded.name,
+      email: decoded.email,
+    }
 
-    // req.user = user;
+    req.user = user;
 
-    return next();
+    return next()
+
   } catch (error) {
     return res
       .status(500)

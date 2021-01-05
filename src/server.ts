@@ -2,12 +2,19 @@ import express from "express";
 import { json } from "body-parser";
 import cors from "cors";
 import consola from "consola";
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 import Route from "./routes/index";
 
 import { APP_PORT } from "./config/env";
 
 const app = express();
+
+//API DOCS
+const swaggerDocument = YAML.load(`${__dirname}/swagger.yaml`);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(json());
 app.use(cors());
 

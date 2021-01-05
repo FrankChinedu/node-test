@@ -49,3 +49,25 @@ export async function login(
   }
   next()
 }
+
+export async function update(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void | Response> {
+  let body = req.body;
+
+  const schema = Joi.object()
+    .keys({
+      name: Joi.string()
+        .min(3)
+        .required(),
+    })
+
+  const { error, value } = schema.validate({ ...body }, {abortEarly: false})
+
+  if(error) {
+    return res.status(400).json({success: false, error});
+  }
+  next()
+}

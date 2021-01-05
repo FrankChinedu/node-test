@@ -47,7 +47,9 @@
     "pg": "^8.5.1",
     "prettier": "^2.2.0",
     "sequelize": "^6.3.5",
-    "ts-node": "^9.0.0"
+    "swagger-ui-express": "^4.1.6",
+    "ts-node": "^9.0.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.19",
