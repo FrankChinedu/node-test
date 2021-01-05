@@ -1,0 +1,355 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: post-like
+  contact: {}
+host: example.com
+basePath: /
+securityDefinitions: {}
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /api/v1/register:
+    post:
+      summary: register user
+      tags:
+      - user
+      operationId: registeruser
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/registeruserrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /api/v1/login:
+    post:
+      summary: login user
+      tags:
+      - user
+      operationId: loginuser
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/loginuserrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /api/v1/user:
+    patch:
+      summary: update user
+      tags:
+      - user
+      operationId: updateuser
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/updateuserrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+    get:
+      summary: get self
+      tags:
+      - user
+      operationId: getself
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        200:
+          description: ''
+          headers: {}
+    delete:
+      summary: delete self
+      tags:
+      - user
+      operationId: deleteSelf
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /api/v1/post:
+    get:
+      summary: get posts
+      tags:
+      - post
+      operationId: getposts
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: page
+        in: query
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      - name: limit
+        in: query
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+    post:
+      summary: create post
+      tags:
+      - post
+      operationId: createpost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/createpostrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /api/v1/post/{id}:
+    put:
+      summary: update post
+      tags:
+      - post
+      operationId: updatepost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/updatepostrequest'
+      responses:
+        200:
+          description: ''
+          headers: {}
+    get:
+      summary: get one post
+      tags:
+      - post
+      operationId: getonepost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+    delete:
+      summary: delete post
+      tags:
+      - post
+      operationId: deletepost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /:
+    get:
+      summary: home
+      tags:
+      - Misc
+      operationId: home
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      responses:
+        200:
+          description: ''
+          headers: {}
+definitions:
+  registeruserrequest:
+    title: registeruserrequest
+    example:
+      name: franka ang
+      email: franka@me.com
+      password: 123456
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - name
+    - email
+    - password
+  loginuserrequest:
+    title: loginuserrequest
+    example:
+      email: franka@me.com
+      password: 123456
+    type: object
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+  updateuserrequest:
+    title: updateuserrequest
+    example:
+      name: lo frank
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+    - name
+  createpostrequest:
+    title: createpostrequest
+    example:
+      name: 'again '
+      body: again logn sop
+    type: object
+    properties:
+      name:
+        type: string
+      body:
+        type: string
+    required:
+    - name
+    - body
+  updatepostrequest:
+    title: updatepostrequest
+    example:
+      name: new name
+      body: ' an new logn body'
+    type: object
+    properties:
+      name:
+        type: string
+      body:
+        type: string
+    required:
+    - name
+    - body
+tags:
+- name: user
+- name: post
+- name: Misc
+  description: ''
