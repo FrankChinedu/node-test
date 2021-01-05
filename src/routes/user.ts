@@ -14,10 +14,11 @@ Router.post("/register", validateRegisterBody, UserController.register);
 
 Router.post("/login", validateLoginBody,  UserController.login);
 
-Router.patch("/user", authenticate, validateUpdateBody,  UserController.update);
+Router.use(authenticate);
+Router.patch("/user", validateUpdateBody,  UserController.update);
 
-Router.get("/user", authenticate,  UserController.get);
+Router.get("/user",  UserController.get);
 
-Router.delete("/user", authenticate,  UserController.delete);
+Router.delete("/user",  UserController.delete);
 
 export default Router;
