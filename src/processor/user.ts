@@ -96,7 +96,7 @@ export const User = {
 
   getById: async (id:number):Promise<IResponse| void> => {
     try {
-      const user = await UserModel.findOne(id);
+      const user = await UserModel.findByPk(id);
       return {
         success: true,
         status: 200,
