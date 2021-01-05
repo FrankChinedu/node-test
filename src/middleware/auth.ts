@@ -3,6 +3,8 @@ import { NextFunction, Response, Request } from 'express';
 import { throwIfUndefined } from '../utils';
 import { verify } from '../utils/jwt'
 import { models } from '../database/model';
+import { User } from '../processor/user'
+import { IResponse} from "../Interfaces";
 const UserModel = models.User;
 
 
@@ -51,6 +53,11 @@ export async function authenticate(
     }
 
     req.user = user;
+    const { success } = await User.getById(user.id) as IResponse;
+
+    if(!success) {
+      return res.status(400).json({success: false, error: 'User does not exist'});
+    }
 
     return next()
 

@@ -16,4 +16,6 @@ Router.post("/login", validateLoginBody,  UserController.login);
 
 Router.patch("/user", authenticate, validateUpdateBody,  UserController.update);
 
+Router.get("/user", authenticate,  UserController.get);
+
 export default Router;

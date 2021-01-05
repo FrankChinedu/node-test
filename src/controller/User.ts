@@ -39,4 +39,12 @@ export const User = {
 
     return res.status(response.status).send(response);
   },
+
+  get: async (req: Request, res: Response): Promise<Response> => {
+    const user = req.user;
+
+    const response = await UserProcessor.getById(user?.id as number) as IResponse;
+
+    return res.status(response.status).send(response);
+  },
 };
