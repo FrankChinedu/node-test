@@ -25,9 +25,11 @@ export const Post = {
 
   getAllPosts: async (req: Request, res: Response): Promise<Response> => {
     const user = req.user;
-    const page = req.query.page ? req.query.page : 1;
-    const limit = req.query.limit ? req.query.limit : 10;
-    const offset = (+page - 1) * +limit;
+    let page = req.query.page ? req.query.page : 1;
+    page = +page ? page : 1;
+    const limit = req.query.limit ? Math.abs(+req.query.limit) : 10;
+
+    const offset = (Math.abs(+page) - 1) * +limit;
 
     const response = await UserProcessor.getAllPosts(user?.id as number, limit as number, offset) as IResponse;
 

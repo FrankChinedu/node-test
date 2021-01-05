@@ -60,9 +60,6 @@ export const Post = {
   getAllPosts: async (id:number, limit: number, offset: number):Promise<IResponse| void> => {
     try {
       const query = {
-        where: {
-          userId: id,
-        },
         limit,
         offset
       }
