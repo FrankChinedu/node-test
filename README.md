@@ -28,3 +28,9 @@
   - npm run dev (start in development mode)
   - npm t (run test)
  ``` 
+
+ ## Build for Production
+  ```
+   - npm run build
+   - npm start
+  ```
