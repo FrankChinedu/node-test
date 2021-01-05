@@ -1,25 +1,25 @@
 import { Optional, Model, DataTypes, Sequelize } from 'sequelize';
 
-export interface PostAttributes {
+export interface LikeAttributes {
   id: number;
   userId: number;
-  name: string;
-  body: string;
+  postId: string;
+  like: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   deleted_at?: Date | null;
 }
 
-export type PostCreationAttributes = Optional<
-  PostAttributes,
+export type LikeCreationAttributes = Optional<
+  LikeAttributes,
   'id' | 'createdAt' | 'updatedAt' | 'deleted_at'
 >;
 
-class Post extends Model<PostAttributes, PostCreationAttributes> {
+class Like extends Model<LikeAttributes, LikeCreationAttributes> {
   public id!: number;
   public userId!: number;
-  public name!: string;
-  public body!: string;
+  public postId!: number;
+  public like!: boolean;
   public deleted_at!: Date | null;
 
   public readonly createdAt!: Date;
@@ -38,19 +38,30 @@ class Post extends Model<PostAttributes, PostCreationAttributes> {
       },
     },
 
-    name: {
-      type: DataTypes.STRING,
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: {
-          msg: 'name cannot be null',
+          msg: 'userId cannot be null',
         },
       },
     },
 
-    body: {
-      type: DataTypes.TEXT,
+    postId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'postId cannot be null',
+        },
+      },
+    },
+
+    like: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultvalue: false,
       validate: {
         notNull: {
           msg: 'body cannot be null',
@@ -58,31 +69,26 @@ class Post extends Model<PostAttributes, PostCreationAttributes> {
       },
     },
 
-    userId: {
-      type: DataTypes.NUMBER,
-      allowNull: false,
-      validate: {
-        notNull: {
-          msg: 'user id cannot be null',
-        },
-      },
-    },
-
   };
 
   static defineAssociation(model: { [key: string]: any }) {
-    Post.belongsTo(model.User, {
+    Like.belongsTo(model.User, {
       as: 'user',
       foreignKey: 'userId',
+      onDelete: "cascade",
+    });
+    Like.belongsTo(model.Post, {
+      as: 'post',
+      foreignKey: 'postId',
       onDelete: "cascade",
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   static defineModelAttrs(sequelize: Sequelize) {
-    return Post.init(this.modelAttributes, {
+    return Like.init(this.modelAttributes, {
       sequelize,
-      tableName: 'posts',
+      tableName: 'likes',
       createdAt: 'created_at',
       updatedAt: 'updated_at',
       deletedAt: 'deleted_at',
@@ -92,4 +98,4 @@ class Post extends Model<PostAttributes, PostCreationAttributes> {
   }
 }
 
-export default Post;
+export default Like;

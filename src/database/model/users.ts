@@ -1,4 +1,9 @@
-import { Optional, Model, DataTypes, Sequelize } from 'sequelize';
+import { 
+  Optional, Model, DataTypes, Sequelize,
+  HasManyGetAssociationsMixin,
+ } from 'sequelize';
+import Post from './posts';
+import Like from './likes';
 import bcrypt from 'bcrypt';
 const salt = 10;
 
@@ -71,8 +76,24 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
         },
       },
     }
-
   };
+  public getPosts!: HasManyGetAssociationsMixin<Post>
+  public getLikes!: HasManyGetAssociationsMixin<Like>
+
+  static defineAssociation(model: { [key: string]: any }) {
+    User.hasMany(model.Post, {
+      as: 'posts',
+      foreignKey: 'id',
+      onDelete: 'CASCADE',
+      hooks: true,
+    });
+    User.hasMany(model.Like, {
+      as: 'likes',
+      foreignKey: 'id',
+      onDelete: 'CASCADE',
+      hooks: true,
+    });
+  }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   static defineModelAttrs(sequelize: Sequelize) {

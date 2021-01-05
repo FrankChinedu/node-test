@@ -125,13 +125,14 @@ export const User = {
   delete: async (id:number):Promise<IResponse| void> => {
     try {
       const user = await UserModel.findByPk(id);
-      user.destroy();
+      await user.destroy();
       return {
         success: true,
         status: 200,
         message: 'user account deleted successfully'
       }
     } catch (error) {
+      console.log('error', error)
       return {
         success:false,
         status: 500,
