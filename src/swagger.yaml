@@ -3,7 +3,7 @@ info:
   version: '1.0'
   title: post-like
   contact: {}
-host: example.com
+host: localhost:5002
 basePath: /
 securityDefinitions: {}
 schemes:
@@ -107,10 +107,10 @@ paths:
           description: ''
           headers: {}
     delete:
-      summary: delete self
+      summary: Delete self
       tags:
       - user
-      operationId: deleteSelf
+      operationId: Deleteself
       deprecated: false
       produces:
       - application/json
@@ -258,6 +258,80 @@ paths:
         200:
           description: ''
           headers: {}
+  /api/v1/like/{post_id}:
+    post:
+      summary: like post
+      tags:
+      - like
+      operationId: likepost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: post_id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+    delete:
+      summary: delete like
+      tags:
+      - like
+      operationId: deletelike
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: post_id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /api/v1/like/dislike/{post_id}:
+    post:
+      summary: dislike post
+      tags:
+      - like
+      operationId: dislikepost
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        default: Bearer {token}
+        type: string
+      - name: post_id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
   /:
     get:
       summary: home
@@ -351,5 +425,6 @@ definitions:
 tags:
 - name: user
 - name: post
+- name: like
 - name: Misc
   description: ''
