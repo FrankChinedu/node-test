@@ -1,7 +1,8 @@
 import express from "express";
 import { Post as PostController } from "../controller/Post";
 import {
-  get as getAllMiddleware
+  get as getAllMiddleware,
+  create as createPostMiddleware
  } from "../middleware/post";
 import {
   authenticate } from '../middleware/auth'
@@ -9,6 +10,8 @@ import {
 const Router = express.Router();
 
 Router.use(authenticate);
+
+Router.post("/", createPostMiddleware, PostController.create);
 
 Router.get("/", getAllMiddleware, PostController.getAllPosts);
 

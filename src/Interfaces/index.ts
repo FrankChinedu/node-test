@@ -17,6 +17,11 @@ export type UserDataType = {
   password: string
 }
 
+export type PostDataType = {
+  name: string,
+  body: string,
+}
+
 export interface UserType {
   id: number,
   email: string,

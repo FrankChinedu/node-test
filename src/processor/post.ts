@@ -1,11 +1,24 @@
 import { models } from '../database/model';
 import { Op as op } from 'sequelize';
-import { IResponse, UserDataType, UserType } from "../Interfaces";
+import { IResponse, PostDataType, } from "../Interfaces";
 const PostModel = models.Post;
 
 export const Post = {
-  create:  async (body):Promise<IResponse| void> => {
-
+  create:  async (body: PostDataType, userId: number):Promise<IResponse| void> => {
+    try {
+      const post =  await PostModel.create({ userId, ...body});
+      return {
+        status: 201,
+        success: true,
+        data: post
+      }
+    } catch (error) {
+      return {
+        status: 500,
+        success: false,
+        error: error.message || 'An errror must have occured'
+      }
+    }
   },
 
   getAllPosts: async (id:number, limit: number, offset: number):Promise<IResponse| void> => {
@@ -21,7 +34,10 @@ export const Post = {
       return {
         success: true,
         status: 200,
-        data: post
+        data: {
+          total: post.count,
+          rows: post.rows,
+        }
       }
     } catch (error) {
       console.log('post', error)

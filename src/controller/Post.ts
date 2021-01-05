@@ -4,11 +4,20 @@ import { Post as UserProcessor } from "../processor/post";
 import {sign} from '../utils/jwt'
 
 export const Post = {
+  create: async (req: Request, res: Response): Promise<Response> => {
+    const user = req.user;
+    const body = req.body;
+
+    const response = await UserProcessor.create(body, user?.id as number) as IResponse;
+
+    return res.status(response.status).send(response);
+  },
+
   getAllPosts: async (req: Request, res: Response): Promise<Response> => {
     const user = req.user;
-    const page = req.query.page;
-    const limit = req.query.limit as any;
-    const offset = 1;
+    const page = req.query.page ? req.query.page : 1;
+    const limit = req.query.limit ? req.query.limit : 10;
+    const offset = (+page - 1) * +limit;
 
     const response = await UserProcessor.getAllPosts(user?.id as number, limit as number, offset) as IResponse;
 

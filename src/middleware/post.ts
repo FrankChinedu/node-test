@@ -28,3 +28,24 @@ export async function get(
   }
   next()
 }
+
+export async function create(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void | Response> {
+  let body = req.body
+
+  const schema = Joi.object()
+    .keys({
+      name: Joi.string().required(),
+      body: Joi.string().required(),
+    })
+
+  const { error, value } = schema.validate({ ...body }, {abortEarly: false})
+
+  if(error) {
+    return res.status(400).json({success: false, error});
+  }
+  next()
+}
