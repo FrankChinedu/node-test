@@ -22,9 +22,9 @@ export const Like = {
   },
   deleteLike: async (req: Request, res: Response): Promise<Response> => {
     const user = req.user;
-    const body = req.body;
+    const post_id = req.params.id as any;
 
-    const response = await PostProcessor.like(body, user?.id as number) as IResponse;
+    const response = await PostProcessor.deleteLike(user?.id as number, post_id as number) as IResponse;
 
     return res.status(response.status).send(response);
   },

@@ -105,5 +105,40 @@ export const Like = {
         error: error.message || "An Error must have Occured please try again",
       }
     }
+  },
+
+  deleteLike: async (userId: number, postId: number): Promise<IResponse| void> => {
+    try {
+      const query = {
+        where: {
+          userId,
+          postId,
+        }
+      }
+
+      const like = await LikeModel.findOne(query);
+
+      if(!like) {
+        return {
+          success: false,
+          status: 404,
+          message: 'Post as not been liked or disliked'
+        }
+      }
+
+      await like.destroy();
+
+      return {
+        success: true,
+        status: 201,
+        message: 'likes has been deleted from post'
+      }
+    } catch (error) {
+      return {
+        success:false,
+        status: 500,
+        error: error.message || "An Error must have Occured please try again",
+      }
+    }
   }
 };
