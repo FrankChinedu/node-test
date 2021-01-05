@@ -7,7 +7,7 @@ import YAML from 'yamljs';
 
 import Route from "./routes/index";
 
-import { APP_PORT } from "./config/env";
+import { APP_PORT, NODE_ENV } from "./config/env";
 
 const app = express();
 
@@ -28,9 +28,10 @@ app.get("/", (req, res) => {
 Route(app);
 
 app.use((req, res) => res.status(404).json({ error: "Route not found" }));
-
-app.listen(APP_PORT, () => {
-  consola.success(`server is listening on port ${APP_PORT}`);
-});
+if(NODE_ENV !== 'test') {
+  app.listen(APP_PORT, () => {
+    consola.success(`server is listening on port ${APP_PORT}`);
+  });
+}
 
 export { app };

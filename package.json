@@ -7,7 +7,9 @@
     "dev": "nodemon src/server.ts",
     "start": "node ./build/server.js",
     "build": "tsc -p tsconfig.json",
-    "test": "jest",
+    "test": "NODE_ENV=test npm run migrate && NODE_ENV=test jest --detectOpenHandles",
+    "migrate": "sequelize db:migrate",
+    "rollback": "sequelize db:migrate",
     "test:watch": "jest --watchAll --runInBand --detectOpenHandles"
   },
   "repository": {

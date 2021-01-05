@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User should return validtion error if some body params are missing 1`] = `
+Object {
+  "error": Object {
+    "_original": Object {
+      "email": "franka@me.com",
+      "name": "franka ang",
+    },
+    "details": Array [
+      Object {
+        "context": Object {
+          "key": "password",
+          "label": "password",
+        },
+        "message": "\\"password\\" is required",
+        "path": Array [
+          "password",
+        ],
+        "type": "any.required",
+      },
+    ],
+  },
+  "success": false,
+}
+`;
