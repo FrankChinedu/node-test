@@ -13,6 +13,16 @@ export const Post = {
     return res.status(response.status).send(response);
   },
 
+  update: async (req: Request, res: Response): Promise<Response> => {
+    const user = req.user;
+    const body = req.body;
+    const post_id = req.params.id as any;
+
+    const response = await UserProcessor.update(body, post_id as number, user?.id as number) as IResponse;
+
+    return res.status(response.status).send(response);
+  },
+
   getAllPosts: async (req: Request, res: Response): Promise<Response> => {
     const user = req.user;
     const page = req.query.page ? req.query.page : 1;

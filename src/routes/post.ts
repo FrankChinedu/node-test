@@ -17,6 +17,8 @@ Router.get("/", getAllMiddleware, PostController.getAllPosts);
 
 Router.get("/:id", getAllMiddleware, PostController.getOne);
 
+Router.put("/:id", createPostMiddleware, PostController.update);
+
 Router.delete("/:id", getAllMiddleware, PostController.delete);
 
 export default Router;

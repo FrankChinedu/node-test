@@ -21,6 +21,42 @@ export const Post = {
     }
   },
 
+  update:  async (body: PostDataType, id: number, userId: number):Promise<IResponse| void> => {
+    try {
+      const query = {
+        where: {
+          userId,
+          id
+        }
+      }
+      const post =  await PostModel.findOne(query);
+
+      if(!post) {
+        return {
+          status: 404,
+          success: false,
+          message: 'post not found'
+        }
+      }
+
+      post.name = body.name;
+      post.body = body.body;
+      await post.save();
+
+      return {
+        status: 201,
+        success: true,
+        data: post
+      }
+    } catch (error) {
+      return {
+        status: 500,
+        success: false,
+        error: error.message || 'An errror must have occured'
+      }
+    }
+  },
+
   getAllPosts: async (id:number, limit: number, offset: number):Promise<IResponse| void> => {
     try {
       const query = {
@@ -40,7 +76,6 @@ export const Post = {
         }
       }
     } catch (error) {
-      console.log('post', error)
       return {
         success:false,
         status: 500,
